@@ -1,0 +1,81 @@
+policy_module(chellit, 1.100.1)
+
+########################################
+#
+# Declarations
+#
+
+type chellit_t;
+type chellit_exec_t;
+init_daemon_domain(chellit_t, chellit_exec_t)
+
+permissive chellit_t;
+
+type chellit_initrc_exec_t;
+init_script_file(chellit_initrc_exec_t)
+
+type chellit_conf_t;
+files_type(chellit_conf_t)
+
+type chellit_var_lib_t;
+files_type(chellit_var_lib_t)
+
+type chellit_var_run_t;
+files_type(chellit_var_run_t)
+
+type chellit_port_t;
+corenet_port(chellit_port_t)
+
+########################################
+#
+# chellit local policy
+#
+allow chellit_t self:process { fork };
+
+allow chellit_t self:fifo_file rw_fifo_file_perms;
+allow chellit_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(chellit_t, chellit_conf_t, chellit_conf_t)
+manage_files_pattern(chellit_t, chellit_conf_t, chellit_conf_t)
+
+manage_dirs_pattern(chellit_t, chellit_var_lib_t, chellit_var_lib_t)
+manage_files_pattern(chellit_t, chellit_var_lib_t, chellit_var_lib_t)
+files_var_lib_filetrans(chellit_t, chellit_var_lib_t, { dir file })
+
+manage_dirs_pattern(chellit_t, chellit_var_run_t, chellit_var_run_t)
+manage_files_pattern(chellit_t, chellit_var_run_t, chellit_var_run_t)
+
+sysnet_dns_name_resolve(chellit_t)
+corenet_all_recvfrom_unlabeled(chellit_t)
+
+allow chellit_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(chellit_t)
+corenet_tcp_sendrecv_generic_node(chellit_t)
+corenet_tcp_sendrecv_all_ports(chellit_t)
+corenet_tcp_bind_generic_node(chellit_t)
+
+gen_require(`
+    type chellit_port_t;
+')
+allow chellit_t chellit_port_t:tcp_socket name_bind;
+
+gen_require(`
+    type chellit_port_t;
+')
+allow chellit_t chellit_port_t:tcp_socket name_connect;
+
+domain_use_interactive_fds(chellit_t)
+
+files_read_etc_files(chellit_t)
+
+miscfiles_read_localization(chellit_t)
+
+sysnet_dns_name_resolve(chellit_t)
+
+allow chellit_t chellit_exec_t:file execute_no_trans;
+allow chellit_t self:process setsched;
+corecmd_exec_ls(chellit_t)
+corenet_tcp_connect_http_port(chellit_t)
+dev_read_urand(chellit_t)
+fs_getattr_xattr_fs(chellit_t)
+kernel_read_system_state(chellit_t)

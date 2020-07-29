@@ -1,0 +1,6 @@
+usr/local/bin/chellit-qt usr/bin
+share/pixmaps/chellit32.xpm usr/share/pixmaps
+share/pixmaps/chellit16.xpm usr/share/pixmaps
+share/pixmaps/chellit128.png usr/share/pixmaps
+debian/chellit-qt.desktop usr/share/applications
+debian/chellit-qt.protocol usr/share/kde4/services/

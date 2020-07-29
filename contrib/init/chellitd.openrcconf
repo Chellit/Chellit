@@ -1,0 +1,33 @@
+# /etc/conf.d/chellitd: config file for /etc/init.d/chellitd
+
+# Config file location
+#CHELLITD_CONFIGFILE="/etc/chellit/chellit.conf"
+
+# What directory to write pidfile to?  (created and owned by $CHELLITD_USER)
+#CHELLITD_PIDDIR="/var/run/chellitd"
+
+# What filename to give the pidfile
+#CHELLITD_PIDFILE="${CHELLITD_PIDDIR}/chellitd.pid"
+
+# Where to write chellitd data (be mindful that the blockchain is large)
+#CHELLITD_DATADIR="/var/lib/chellitd"
+
+# User and group to own chellitd process
+#CHELLITD_USER="chellit"
+#CHELLITD_GROUP="chellit"
+
+# Path to chellitd executable
+#CHELLITD_BIN="/usr/bin/chellitd"
+
+# Nice value to run chellitd under
+#CHELLITD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#CHELLITD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for chellitd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+CHELLITD_SIGTERM_TIMEOUT=60

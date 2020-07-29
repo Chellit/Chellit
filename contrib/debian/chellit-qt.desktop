@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Chellit Core
+Comment=Connect to the Chellit P2P Network
+Comment[de]=Verbinde mit dem Chellit peer-to-peer Netzwerk
+Comment[fr]=Chellit, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Chellit, eşten eşe kriptografik sanal para birimi
+Exec=chellit-qt %u
+Terminal=false
+Type=Application
+Icon=chellit128
+MimeType=x-scheme-handler/chellit;
+Categories=Office;Finance;

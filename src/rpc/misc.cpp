@@ -774,8 +774,13 @@ UniValue getaddressutxos(const JSONRPCRequest& request)
     std::sort(unspentOutputs.begin(), unspentOutputs.end(), heightSort);
 
     UniValue utxos(UniValue::VARR);
+    CAmount total = 0;
 
     for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it=unspentOutputs.begin(); it!=unspentOutputs.end(); it++) {
+        if (requiredAmount > 0 && total >= requiredAmount) {
+            break;
+        }
+
         UniValue output(UniValue::VOBJ);
         std::string address;
         uint32_t nTokenLockTime = 0;
@@ -800,6 +805,8 @@ UniValue getaddressutxos(const JSONRPCRequest& request)
             output.pushKV("satoshis", it->second.satoshis);
             output.pushKV("height", it->second.blockHeight);
             utxos.push_back(output);
+
+            total += it->second.satoshis;
         }
     }
 

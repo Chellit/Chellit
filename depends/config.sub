@@ -248,8 +248,8 @@ case $basic_machine in
 	1750a | 580 \
 	| a29k \
 	| aarch64 | aarch64_be \
-	| cheha | chehaev[4-8] | chehaev56 | chehaev6[78] | chehapca5[67] \
-	| cheha64 | cheha64ev[4-8] | cheha64ev56 | cheha64ev6[78] | cheha64pca5[67] \
+	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
+	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
 	| am33_2.0 \
 	| arc | arceb \
 	| arm | arm[bl]e | arme[lb] | armv[2-8] | armv[3-8][lb] | armv7[arm] \
@@ -373,9 +373,9 @@ case $basic_machine in
 	580-* \
 	| a29k-* \
 	| aarch64-* | aarch64_be-* \
-	| cheha-* | chehaev[4-8]-* | chehaev56-* | chehaev6[78]-* \
-	| cheha64-* | cheha64ev[4-8]-* | cheha64ev56-* | cheha64ev6[78]-* \
-	| chehapca5[67]-* | cheha64pca5[67]-* | arc-* | arceb-* \
+	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
+	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
+	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* | arceb-* \
 	| arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
 	| avr-* | avr32-* \
 	| ba-* \
@@ -1185,7 +1185,7 @@ case $basic_machine in
 		os=-dynix
 		;;
 	t3e)
-		basic_machine=chehaev5-cray
+		basic_machine=alphaev5-cray
 		os=-unicos
 		;;
 	t90)

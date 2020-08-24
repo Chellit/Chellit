@@ -139,7 +139,7 @@
     </message>
     <message>
         <source>Send coins to an Chellit address</source>
-        <translation>Испрати биткоини на Биткоин адреса</translation>
+        <translation>Испрати Chellit на Chellit адреса</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -147,7 +147,7 @@
     </message>
     <message>
         <source>Chellit</source>
-        <translation>Биткоин</translation>
+        <translation>Chellit</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -579,7 +579,7 @@
     </message>
     <message>
         <source>Chellit Core</source>
-        <translation>Биткоин Core</translation>
+        <translation>Chellit Core</translation>
     </message>
     <message>
         <source>Warning</source>

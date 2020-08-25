@@ -86,6 +86,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "move", 3, "minconf" },
     { "sendfrom", 2, "amount" },
     { "sendfrom", 3, "minconf" },
+    { "sendfrom", 6, "subtractfeefromamount" },
     { "listtransactions", 1, "count" },
     { "listtransactions", 2, "skip" },
     { "listtransactions", 3, "include_watchonly" },

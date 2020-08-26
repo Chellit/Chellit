@@ -484,8 +484,6 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     int lockTime = 0;
     if (!request.params[2].isNull()) {
         lockTime = request.params[2].get_int();
-        if (lockTime <= 255)
-            lockTime = 0;
     }
 
     // Wallet comments
@@ -982,8 +980,6 @@ UniValue sendfrom(const JSONRPCRequest& request)
     int lockTime = 0;
     if (!request.params[3].isNull()) {
         lockTime = request.params[3].get_int();
-        if (lockTime <= 255)
-            lockTime = 0;
     }
 
     int nMinDepth = 1;

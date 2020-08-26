@@ -485,7 +485,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     if (!request.params[2].isNull()) {
         lockTime = request.params[2].get_int();
         if (lockTime <= 255) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "lock time must be greater than 255.");
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Lock time must be greater than 255.");
         }
     }
 
@@ -932,10 +932,9 @@ UniValue sendfrom(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() < 3 || request.params.size() > 7)
+    if (request.fHelp || request.params.size() < 3 || request.params.size() > 8)
         throw std::runtime_error(
             "sendfrom \"fromaccount\" \"toaddress\" amount ( minconf \"comment\" \"comment_to\" )\n"
-            "\nDEPRECATED (use sendtoaddress). Sent an amount from an account to a chellit address."
             + HelpRequiringPassphrase(pwallet) + "\n"
             "\nArguments:\n"
             "1. \"fromaccount\"       (string, required) The name of the account to send funds from. May be the default account using \"\".\n"
@@ -944,13 +943,14 @@ UniValue sendfrom(const JSONRPCRequest& request)
             "                       the spend.\n"
             "2. \"toaddress\"         (string, required) The chellit address to send funds to.\n"
             "3. amount                (numeric or string, required) The amount in " + CURRENCY_UNIT + " (transaction fee is added on top).\n"
-            "4. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
-            "5. \"comment\"           (string, optional) A comment used to store what the transaction is for. \n"
+            "4. \"lock_time\"          (integer, optional, default=0) Locktime for transaction, could be height or timestamp\n"
+            "5. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
+            "6. \"comment\"           (string, optional) A comment used to store what the transaction is for. \n"
             "                                     This is not part of the transaction, just kept in your wallet.\n"
-            "6. \"comment_to\"        (string, optional) An optional comment to store the name of the person or organization \n"
+            "7. \"comment_to\"        (string, optional) An optional comment to store the name of the person or organization \n"
             "                                     to which you're sending the transaction. This is not part of the transaction, \n"
             "                                     it is just kept in your wallet.\n"
-            "7. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
+            "8. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
             "\nResult:\n"
             "\"txid\"                 (string) The transaction id.\n"
             "\nExamples:\n"
@@ -978,16 +978,26 @@ UniValue sendfrom(const JSONRPCRequest& request)
     CAmount nAmount = AmountFromValue(request.params[2]);
     if (nAmount <= 0)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+
+    // Lock time
+    int lockTime = 0;
+    if (!request.params[3].isNull()) {
+        lockTime = request.params[3].get_int();
+        if (lockTime <= 255) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Lock time must be greater than 255.");
+        }
+    }
+
     int nMinDepth = 1;
-    if (!request.params[3].isNull())
-        nMinDepth = request.params[3].get_int();
+    if (!request.params[4].isNull())
+        nMinDepth = request.params[4].get_int();
 
     CWalletTx wtx;
     wtx.strFromAccount = strAccount;
-    if (!request.params[4].isNull() && !request.params[4].get_str().empty())
-        wtx.mapValue["comment"] = request.params[4].get_str();
     if (!request.params[5].isNull() && !request.params[5].get_str().empty())
-        wtx.mapValue["to"]      = request.params[5].get_str();
+        wtx.mapValue["comment"] = request.params[5].get_str();
+    if (!request.params[6].isNull() && !request.params[6].get_str().empty())
+        wtx.mapValue["to"]      = request.params[6].get_str();
 
     EnsureWalletIsUnlocked(pwallet);
 
@@ -997,12 +1007,12 @@ UniValue sendfrom(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
 
     bool fSubtractFeeFromAmount = false;
-    if (!request.params[6].isNull()) {
-        fSubtractFeeFromAmount = request.params[6].get_bool();
+    if (!request.params[7].isNull()) {
+        fSubtractFeeFromAmount = request.params[7].get_bool();
     }
 
     CCoinControl no_coin_control; // This is a deprecated API
-    SendMoney(pwallet, dest, nAmount, fSubtractFeeFromAmount, wtx, no_coin_control);
+    SendMoney(pwallet, dest, nAmount, fSubtractFeeFromAmount, wtx, no_coin_control, lockTime);
 
     return wtx.GetHash().GetHex();
 }
@@ -3958,7 +3968,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "createwallet",             &createwallet,             {"wallet_name"} },
     { "wallet",             "lockunspent",              &lockunspent,              {"unlock","transactions"} },
     // { "wallet",             "move",                     &movecmd,                  {"fromaccount","toaccount","amount","minconf","comment"} },
-    { "wallet",             "sendfrom",                 &sendfrom,                 {"fromaccount","toaddress","amount","minconf","comment","comment_to", "subtractfeefromamount", "conf_target","estimate_mode"} },
+    { "wallet",             "sendfrom",                 &sendfrom,                 {"fromaccount","toaddress","amount","lock_time","minconf","comment","comment_to", "subtractfeefromamount", "conf_target","estimate_mode"} },
     { "wallet",             "sendmany",                 &sendmany,                 {"fromaccount","amounts","minconf","comment","subtractfeefrom", "conf_target","estimate_mode"} },
     { "wallet",             "sendtoaddress",            &sendtoaddress,            {"address","amount","lock_time","comment","comment_to","subtractfeefromamount", "conf_target","estimate_mode"} },
     // { "wallet",             "setlabel",                 &setlabel,                 {"address","label"} },

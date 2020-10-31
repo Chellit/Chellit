@@ -430,9 +430,9 @@ void CNewToken::ConstructTransaction(CScript& script) const
     ssToken << *this;
 
     std::vector<unsigned char> vchMessage;
-    vchMessage.push_back(CHE_A); // a
-    vchMessage.push_back(CHE_L); // l
-    vchMessage.push_back(CHE_P); // p
+    vchMessage.push_back(CHE_C); // c
+    vchMessage.push_back(CHE_H); // h
+    vchMessage.push_back(CHE_E); // e
     vchMessage.push_back(CHE_Q); // q
 
     vchMessage.insert(vchMessage.end(), ssToken.begin(), ssToken.end());
@@ -445,9 +445,9 @@ void CNewToken::ConstructOwnerTransaction(CScript& script) const
     ssOwner << std::string(this->strName + OWNER_TAG);
 
     std::vector<unsigned char> vchMessage;
-    vchMessage.push_back(CHE_A); // a
-    vchMessage.push_back(CHE_L); // l
-    vchMessage.push_back(CHE_P); // p
+    vchMessage.push_back(CHE_C); // c
+    vchMessage.push_back(CHE_H); // h
+    vchMessage.push_back(CHE_E); // e
     vchMessage.push_back(CHE_O); // o
 
     vchMessage.insert(vchMessage.end(), ssOwner.begin(), ssOwner.end());
@@ -932,9 +932,9 @@ void CTokenTransfer::ConstructTransaction(CScript& script) const
     ssTransfer << *this;
 
     std::vector<unsigned char> vchMessage;
-    vchMessage.push_back(CHE_A); // a
-    vchMessage.push_back(CHE_L); // l
-    vchMessage.push_back(CHE_P); // p
+    vchMessage.push_back(CHE_C); // c
+    vchMessage.push_back(CHE_H); // h
+    vchMessage.push_back(CHE_E); // e
     vchMessage.push_back(CHE_T); // t
 
     vchMessage.insert(vchMessage.end(), ssTransfer.begin(), ssTransfer.end());
@@ -1009,10 +1009,10 @@ void CReissueToken::ConstructTransaction(CScript& script) const
     ssReissue << *this;
 
     std::vector<unsigned char> vchMessage;
-    vchMessage.push_back(CHE_A); // a
-    vchMessage.push_back(CHE_L); // l
-    vchMessage.push_back(CHE_P); // p
-    vchMessage.push_back(CHE_A); // a
+    vchMessage.push_back(CHE_C); // c
+    vchMessage.push_back(CHE_H); // h
+    vchMessage.push_back(CHE_E); // e
+    vchMessage.push_back(CHE_C); // c
 
     vchMessage.insert(vchMessage.end(), ssReissue.begin(), ssReissue.end());
     script << OP_CHE_TOKEN << ToByteVector(vchMessage) << OP_DROP;

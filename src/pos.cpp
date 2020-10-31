@@ -53,10 +53,11 @@ uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kerne
 //
 bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, CAmount nValueIn, const COutPoint& prevout, unsigned int nTimeTx, unsigned int nTimeTxPoS)
 {
-    bool result = true;
+    if (!pindexPrev)
+        return false;
 
     if (nValueIn == 0)
-        result = false;
+        return false;
 
     // Base target
     arith_uint256 bnTarget;
@@ -67,12 +68,7 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, CAm
     ss << pindexPrev->nStakeModifier << nTimeTxPoS << prevout.hash << prevout.n << nTimeTx;
     uint256 hashProofOfStake = ss.GetHash();
 
-    // Now check if proof-of-stake hash meets target protocol
-    if (UintToArith256(hashProofOfStake) / nValueIn > bnTarget) {
-        result = false;
-    }
-
-    return result;
+    return (UintToArith256(hashProofOfStake) / nValueIn) <= bnTarget;
 }
 
 // Check whether the coinstake timestamp meets protocol
@@ -95,7 +91,9 @@ bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBloc
 
 bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBlock, const COutPoint& prevout, CCoinsViewCache& view, const std::map<COutPoint, CStakeCache>& cache)
 {
-    uint256 hashProofOfStake, targetProofOfStake;
+    if (!pindexPrev)
+        return false;
+
     auto it=cache.find(prevout);
     if (it == cache.end()) {
         //not found in cache (shouldn't happen during staking, only during verification which does not use cache)
@@ -140,6 +138,9 @@ bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBloc
 // Check kernel hash target and coinstake signature
 bool CheckProofOfStake(CBlockIndex* pindexPrev, CValidationState& state, const CTransaction& tx, unsigned int nBits, uint32_t nTimeBlock, uint256& hashProofOfStake, uint256& targetProofOfStake, CCoinsViewCache& view)
 {
+    if (!pindexPrev)
+        return false;
+
     if (!tx.IsCoinStake()) {
         return error("CheckProofOfStake() : called on non-coinstake %s", tx.GetHash().ToString());
     }

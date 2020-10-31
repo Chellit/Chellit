@@ -17,9 +17,9 @@
 #include <unordered_map>
 #include <list>
 
-#define CHE_A 97
-#define CHE_L 108
-#define CHE_P 112
+#define CHE_C 99
+#define CHE_H 104
+#define CHE_E 101
 #define CHE_Q 113
 #define CHE_T 116
 #define CHE_O 111

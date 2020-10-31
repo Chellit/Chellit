@@ -273,14 +273,14 @@ bool CScript::IsTokenScript(int& nType, bool& fIsOwner, int& nStartingIndex) con
     if (this->size() > 30) {
         if ((*this)[25] == OP_CHE_TOKEN) { // OP_CHE_TOKEN is always in the 25 index of the script if it exists
             int index = -1;
-            if ((*this)[27] == CHE_A) { // Check to see if CHE starts at 27 ( this->size() < 105)
-                if ((*this)[28] == CHE_L)
-                    if ((*this)[29] == CHE_P)
+            if ((*this)[27] == CHE_C) { // Check to see if CHE starts at 27 ( this->size() < 105)
+                if ((*this)[28] == CHE_H)
+                    if ((*this)[29] == CHE_E)
                         index = 30;
             } else {
-                if ((*this)[28] == CHE_A) // Check to see if CHE starts at 28 ( this->size() >= 105)
-                    if ((*this)[29] == CHE_L)
-                        if ((*this)[30] == CHE_P)
+                if ((*this)[28] == CHE_C) // Check to see if CHE starts at 28 ( this->size() >= 105)
+                    if ((*this)[29] == CHE_H)
+                        if ((*this)[30] == CHE_E)
                             index = 31;
             }
 
@@ -297,7 +297,7 @@ bool CScript::IsTokenScript(int& nType, bool& fIsOwner, int& nStartingIndex) con
                     nType = TX_NEW_TOKEN;
                     fIsOwner = true;
                     return true;
-                } else if ((*this)[index] == CHE_A) {
+                } else if ((*this)[index] == CHE_C) {
                     nType = TX_REISSUE_TOKEN;
                     return true;
                 }

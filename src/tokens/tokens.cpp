@@ -2482,6 +2482,9 @@ bool GetBestTokenAddressAmount(CTokensCache& cache, const std::string& tokenName
 }
 
 bool GetAllMyTokenBalancesWallet(CWallet* pwallet, std::map<std::string, std::vector<COutput> >& outputs, std::map<std::string, CAmount>& amounts, const std::string& prefix) {
+    if (!pwallet)
+        return false;
+
     // Get the map of tokennames to outputs
     pwallet->AvailableTokens(outputs, true, nullptr, 1, MAX_MONEY_TOKENS, MAX_MONEY_TOKENS);
 
@@ -2512,6 +2515,9 @@ bool GetAllMyTokenBalances(std::map<std::string, std::vector<COutput> >& outputs
 }
 
 bool GetAllMyLockedTokenBalancesWallet(CWallet* pwallet, std::map<std::string, std::vector<COutput> >& outputs, std::map<std::string, CAmount>& amounts, const std::string& prefix) {
+    if (!pwallet)
+        return false;
+
     // Get the map of tokennames to outputs
     pwallet->LockedTokens(outputs, true, nullptr, 1, MAX_MONEY_TOKENS, MAX_MONEY_TOKENS);
 
@@ -2560,6 +2566,9 @@ std::string EncodeIPFS(std::string decoded){
 
 bool CreateTokenTransaction(CWallet* pwallet, CCoinControl& coinControl, const CNewToken& token, const std::string& address, std::pair<int, std::string>& error, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRequired)
 {
+    if (!pwallet)
+        return false;
+
     std::vector<CNewToken> tokens;
     tokens.push_back(token);
     return CreateTokenTransaction(pwallet, coinControl, tokens, address, error, wtxNew, reservekey, nFeeRequired);
@@ -2678,6 +2687,9 @@ bool CreateTokenTransaction(CWallet* pwallet, CCoinControl& coinControl, const s
 
 bool CreateReissueTokenTransaction(CWallet* pwallet, CCoinControl& coinControl, const CReissueToken& reissueToken, const std::string& address, std::pair<int, std::string>& error, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRequired)
 {
+    if (!pwallet)
+        return false;
+
     std::string token_name = reissueToken.strName;
     std::string change_address = EncodeDestination(coinControl.destChange);
 
@@ -2787,6 +2799,9 @@ bool CreateReissueTokenTransaction(CWallet* pwallet, CCoinControl& coinControl, 
 
 bool CreateTransferTokenTransaction(CWallet* pwallet, const CCoinControl& coinControl, const std::vector< std::pair<CTokenTransfer, std::string> >vTransfers, const std::string& changeAddress, std::pair<int, std::string>& error, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRequired)
 {
+    if (!pwallet)
+        return false;
+
     // Initialize Values for transaction
     std::string strTxError;
     std::vector<CRecipient> vecSend;
@@ -2860,6 +2875,9 @@ bool CreateTransferTokenTransaction(CWallet* pwallet, const CCoinControl& coinCo
 
 bool SendTokenTransaction(CWallet* pwallet, CWalletTx& transaction, CReserveKey& reserveKey, std::pair<int, std::string>& error, std::string& txid)
 {
+    if (!pwallet)
+        return false;
+
     CValidationState state;
     if (!pwallet->CommitTransaction(transaction, reserveKey, g_connman.get(), state)) {
         error = std::make_pair(RPC_WALLET_ERROR, strprintf("Error: The transaction was rejected! Reason given: %s", state.GetRejectReason()));
@@ -2872,6 +2890,9 @@ bool SendTokenTransaction(CWallet* pwallet, CWalletTx& transaction, CReserveKey&
 
 bool VerifyWalletHasToken(CWallet* pwallet, const std::string& token_name, std::pair<int, std::string>& pairError)
 {
+    if (!pwallet)
+        return false;
+
     std::vector<COutput> vCoins;
     std::map<std::string, std::vector<COutput> > mapTokenCoins;
     pwallet->AvailableTokens(mapTokenCoins);

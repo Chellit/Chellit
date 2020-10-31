@@ -442,12 +442,12 @@ public:
    const std::unordered_map<cache_key_t, list_iterator_t>& GetItemsMap()
     {
         return cacheItemsMap;
-    };
+    }
 
     const std::list<key_value_pair_t>& GetItemsList()
     {
         return cacheItemsList;
-    };
+    }
 
 
     CLRUCache(const CLRUCache& cache)

@@ -9,6 +9,7 @@
 #include <util.h>
 #include <validation.h>
 #include "tx_verify.h"
+#include <banned.h>
 
 #include "consensus.h"
 #include "chainparams.h"
@@ -385,6 +386,10 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         nValueIn += coin.out.nValue;
         if (!MoneyRange(coin.out.nValue) || !MoneyRange(nValueIn)) {
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-inputvalues-outofrange");
+        }
+
+        if (areBannedInputs(prevout.hash, prevout.n)) {
+            return state.DoS(100, false, REJECT_INVALID, "banned-inputs-spent");
         }
     }
 

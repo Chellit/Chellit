@@ -82,6 +82,7 @@ endif
 CHELLIT_CORE_H = \
   addrdb.h \
   addrman.h \
+  banned.h \
   tokens/tokens.h \
   tokens/tokendb.h \
   tokens/tokentypes.h \
@@ -199,6 +200,7 @@ libchellit_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libchellit_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
+  banned.cpp \
   bloom.cpp \
   blockencodings.cpp \
   chain.cpp \
